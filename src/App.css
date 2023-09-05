@@ -1,0 +1,22 @@
+.mainMenu {
+}
+
+.mainMenuTitle {  
+  display: flex;
+  justify-content: center;
+}
+
+.mainMenuSubTitle {  
+  display: flex;
+  justify-content: center;
+}
+
+.mainMenuSelect {  
+  display: flex;
+  justify-content: center;
+}
+
+.mainMenuConfirm {  
+  display: flex;
+  justify-content: center;
+}
