@@ -33,7 +33,7 @@ const useContextMenu = () => {
   return { contextMenu, setContextMenu, handleContextMenu, handleClose };
 };
 
-export function ContextMenu({ children }) {
+export const ContextMenu = ({ children }) => {
   const { contextMenu, setContextMenu, handleContextMenu, handleClose } =
     useContextMenu();
   return (
