@@ -2,8 +2,6 @@ import React, { useContext } from "react";
 import { ContextMenu } from "./ContextMenu";
 import { TopBar } from "./TopBar";
 import context from "./Settings";
-import SelectLanguage from "./SelectLanguage";
-import "./App.css";
 
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
