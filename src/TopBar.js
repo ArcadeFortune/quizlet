@@ -33,7 +33,6 @@ export const TopBar = () => {
             flexGrow: 1,
             textDecoration: "none",
             color: "inherit",
-            display: { xs: "none", md: "flex" },
             fontWeight: 700,
           }}
           href="/"
