@@ -51,7 +51,10 @@ export const MainContainer = () => {
   };
 
   return (
+    
     <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
+        
+      <CssBaseline />
       <Paper
         variant="outlined"
         sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
