@@ -24,7 +24,7 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 
-const steps = ["Choose the settings", "Answer the questions", "???"];
+const steps = ["Choose the settings", "Translate the english text", "???"];
 
 function getStepContent(step) {
   switch (step) {
