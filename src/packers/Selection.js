@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
-import { SelectLanguage } from "./SelectLanguage";
-import { SelectWords } from "./SelectWords";
-import { SelectQuestions } from "./SelectQuestions";
+import { SelectLanguage } from "../SelectLanguage";
+import { SelectWords } from "../SelectWords";
+import { SelectQuestions } from "../SelectQuestions";
 
 export const Selection = ({ lang, handleLangChange, words, handleWordsChange, questions, handleQuestionsChange}) => {
   return (
