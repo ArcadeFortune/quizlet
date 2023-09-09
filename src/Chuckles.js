@@ -14,8 +14,6 @@ const fetchChuckNorrisJoke = async () => {
 };
 
 export const Chuckles = async (questionsToAsk) => {
-  // using SetQuestions instead of returning a list is to avoid using async, because react does not like that
-  // i know it is not functional programming
   let jokes = [];
 
   for (let i = 0; i < questionsToAsk; i++) {
