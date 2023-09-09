@@ -1,19 +1,25 @@
-function processWords(backup, modifiedWords, replacedCount, number) {
+
+
+import { Typography } from '@mui/material';
+import TextField from '@mui/material/TextField';
+
+
+function processWords(backup, modifiedWords, replacedCount, number, index2) {
   backup++;
   modifiedWords = modifiedWords.map((word, index) => {
     // what is this?
     if (replacedCount < number && Math.random() < 0.5 && word !== "___") {
       replacedCount++;
 
-      return "___";
+      return <TextField key={`textField-${index}`} id="standard-basic" variant="standard" size='small' sx={{ width: '4em' }}/>;
     }
-
-    return word;
+    
+    return <Typography key={`text-${index}`} display="inline">{word} </Typography>;
   });
   return { backup, modifiedWords, replacedCount };
 }
 
-export const AnswerQuestion = ({ text, words }) => {
+export const AnswerQuestion = ({ text, words, index }) => {
   // returns the text with a <span> around random words, the amount of words is specified by the words prop
   const parseText = (text, number) => {
     const words = text.split(" ");
@@ -28,11 +34,12 @@ export const AnswerQuestion = ({ text, words }) => {
         backup,
         modifiedWords,
         replacedCount,
-        number
+        number,
+        index
       ));
     }
 
-    return modifiedWords.join(" ");
+    return modifiedWords;
   };
 
   return parseText(text, words);

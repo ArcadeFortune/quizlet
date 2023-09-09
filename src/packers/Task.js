@@ -10,15 +10,13 @@ import Typography from "@mui/material/Typography";
 
 export const Task = ({ index, question, answer, words }) => {
   return (
-    <Card sx={{mb: '1%'}}>
+    <Card sx={{ mb: "1%" }}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           #{index + 1} {question}
         </Typography>
-        <Typography variant="body2">
-          <AnswerQuestion text={'answer watch Date A live'} words={words}/>
-        </Typography>
+          <AnswerQuestion text={"answer watch Date A live"} words={words} index={index} />
       </CardContent>
-    </Card >
+    </Card>
   );
 };

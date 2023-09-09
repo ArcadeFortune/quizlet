@@ -25,6 +25,7 @@ import Fade from "@mui/material/Fade";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+import TextField from '@mui/material/TextField';
 
 const steps = ["Choose the settings", "Translate the english text", "???"];
 
