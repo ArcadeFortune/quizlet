@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Selection } from "./Selection";
+import { Chuckles } from "./Chuckles";
 
 import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -42,9 +43,10 @@ export const MainContainer = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [lang, setLang] = useState("");
   const [words, setWords] = useState(1);
-  const [questions, setQuestions] = useState(5);
+  const [questionsToAsk, setQuestionsToAsk] = useState(1);
   const [ok, setOk] = useState(false);
-
+  const [questions, setQuestions] = useState([]);
+  
   const handleLangChange = (event) => {
     setLang(event.target.value);
   };
@@ -54,7 +56,7 @@ export const MainContainer = () => {
   };
 
   const handleQuestionsChange = (event) => {
-    setQuestions(event.target.value);
+    setQuestionsToAsk(event.target.value);
   };
 
   useEffect(() => {
@@ -63,7 +65,10 @@ export const MainContainer = () => {
     }
   }, [lang]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    if (activeStep === 0) {
+      setQuestions(await Chuckles(questionsToAsk));
+    }
     setActiveStep(activeStep + 1);
   };
 
@@ -76,7 +81,7 @@ export const MainContainer = () => {
 		handleLangChange,
 		words,
 		handleWordsChange,
-		questions,
+		questions: questionsToAsk,
 		handleQuestionsChange
 	};
 
@@ -110,19 +115,18 @@ export const MainContainer = () => {
 
         {/* I do not like this way of codig with the steps */}
         {activeStep === 1 ? (
-          // victory screen
           <React.Fragment>
-            <Typography variant="h5" gutterBottom>
-              Thank you for your order.
-            </Typography>
-            <Typography variant="subtitle1">
-              Your order number is #2001539. We have emailed your order
-              confirmation, and will send you an update when your order has
-              shipped.
+            {questions.map((question, index) => (
+              <Typography variant="h6" gutterBottom key={index}>
+                #{index + 1} {question}
+              </Typography>
+            ))} 
+            {/* <Typography variant="subtitle1">
 							{lang}
               {words}
-              {questions}
-            </Typography>
+              {questionsToAsk}
+              {questions} 
+            </Typography> */}
           </React.Fragment>
         ) : (
           <>
