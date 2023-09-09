@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 
 // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 // copy table, paste into excel, save as CSV, convert to JSON :)
-import everyLanguage from "./EveryLanguage.json";
+import everyLanguage from "./settings/EveryLanguage.json";
 
 export const SelectLanguage = ({ lang, handleChange }) => {
   return (
