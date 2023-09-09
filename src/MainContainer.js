@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Selection } from "./Selection";
+import { Selection } from "./packers/Selection";
+import { Task } from "./packers/Task"
 import { Chuckles } from "./Chuckles";
+import { TranslateChuckles } from "./TranslateChuckles";
 
 import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -35,7 +37,8 @@ function getStepContent(step) {
     case 2:
       return;
     default:
-      throw new Error("Unknown step");
+      alert("Unknown step")
+      window.location.reload()
   }
 }
 
@@ -46,7 +49,8 @@ export const MainContainer = () => {
   const [questionsToAsk, setQuestionsToAsk] = useState(1);
   const [ok, setOk] = useState(false);
   const [questions, setQuestions] = useState([]);
-  
+  const [answers, setAnswers] = useState([]);
+
   const handleLangChange = (event) => {
     setLang(event.target.value);
   };
@@ -67,7 +71,9 @@ export const MainContainer = () => {
 
   const handleNext = async () => {
     if (activeStep === 0) {
-      setQuestions(await Chuckles(questionsToAsk));
+      const fetchedQuestions = await Chuckles(questionsToAsk);
+      setQuestions(fetchedQuestions);
+      setAnswers(await TranslateChuckles(fetchedQuestions, lang));
     }
     setActiveStep(activeStep + 1);
   };
@@ -76,63 +82,39 @@ export const MainContainer = () => {
     setActiveStep(activeStep - 1);
   };
 
-	const everything = {
-		lang,
-		handleLangChange,
-		words,
-		handleWordsChange,
-		questions: questionsToAsk,
-		handleQuestionsChange
-	};
+  const everything = {
+    lang,
+    handleLangChange,
+    words,
+    handleWordsChange,
+    questions: questionsToAsk,
+    handleQuestionsChange,
+  };
 
   return (
     <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
       <CssBaseline />
-      <Paper
-        variant="outlined"
-        sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-      >
-        
-				<Typography
-              component="h1"
-              variant="h4"
-              align="center"
-              sx={{ mb: 2 }}
-            >
-              Quizlet
-            </Typography>
-            <Divider />
+      <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+        <Typography component="h1" variant="h4" align="center" sx={{ mb: 2 }}>
+          Quizlet
+        </Typography>
+        <Divider />
 
-				
-				<Typography
-              component="h1"
-              variant="subtitle1"
-              align="center"
-              sx={{ my: 1 }}
-            >
-              {steps[activeStep]}
-            </Typography>
+        <Typography component="h1" variant="subtitle1" align="center" sx={{ my: 1 }}>
+          {steps[activeStep]}
+        </Typography>
 
         {/* I do not like this way of codig with the steps */}
         {activeStep === 1 ? (
-          <React.Fragment>
+          <>
             {questions.map((question, index) => (
-              <Typography variant="h6" gutterBottom key={index}>
-                #{index + 1} {question}
-              </Typography>
-            ))} 
-            {/* <Typography variant="subtitle1">
-							{lang}
-              {words}
-              {questionsToAsk}
-              {questions} 
-            </Typography> */}
-          </React.Fragment>
+              <Task key={index} index={index} question={question} answer={answers[index ]} words={words}/>
+            ))}
+            </>
         ) : (
           <>
-						{/* <Selection lang={lang} handleLangChange={handleLangChange} words={words} handleWordsChange={handleWordsChange} questions={questions} handleQuestionsChange={handleQuestionsChange}/> */}
-						<Selection {...everything} />
-						{getStepContent(activeStep)}
+            <Selection {...everything} />
+            {getStepContent(activeStep)}
             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
@@ -143,8 +125,7 @@ export const MainContainer = () => {
                 disabled={!ok} // copilot OP
                 variant="contained"
                 onClick={handleNext}
-                sx={{ mt: 3, ml: 1 }}
-              >
+                sx={{ mt: 3, ml: 1 }}>
                 {ok ? "OK" : "OK"}
               </Button>
             </Box>
