@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SelectLanguage } from "./SelectLanguage";
-import { SelectWords } from "./SelectWords";
+import { Selection } from "./Selection";
 
 import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -24,7 +23,8 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 
-const steps = ["Shipping address", "Payment details", "Review your order"];
+const steps = ["Choose the settings", "Answer the questions", "???"];
+
 function getStepContent(step) {
   switch (step) {
     case 0:
@@ -41,7 +41,8 @@ function getStepContent(step) {
 export const MainContainer = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [lang, setLang] = useState("");
-  const [words, setWords] = useState("");
+  const [words, setWords] = useState(1);
+  const [questions, setQuestions] = useState(5);
   const [ok, setOk] = useState(false);
 
   const handleLangChange = (event) => {
@@ -50,6 +51,10 @@ export const MainContainer = () => {
 
   const handleWordsChange = (event) => {
     setWords(event.target.value);
+  };
+
+  const handleQuestionsChange = (event) => {
+    setQuestions(event.target.value);
   };
 
   useEffect(() => {
@@ -66,40 +71,45 @@ export const MainContainer = () => {
     setActiveStep(activeStep - 1);
   };
 
+	const everything = {
+		lang,
+		handleLangChange,
+		words,
+		handleWordsChange,
+		questions,
+		handleQuestionsChange
+	};
+
   return (
     <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
       <CssBaseline />
-
       <Paper
         variant="outlined"
         sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
       >
-        <Typography component="h1" variant="h4" align="center" sx={{ mb: 2 }}>
-          Quizlet
-        </Typography>
-        <Divider />
+        
+				<Typography
+              component="h1"
+              variant="h4"
+              align="center"
+              sx={{ mb: 2 }}
+            >
+              Quizlet
+            </Typography>
+            <Divider />
 
-        <Typography
-          component="h1"
-          variant="h5"
-          align="left"
-          sx={{ pt: 3, pb: 1 }}
-        >
-          Chose a language
-        </Typography>
+				
+				<Typography
+              component="h1"
+              variant="subtitle1"
+              align="center"
+              sx={{ my: 1 }}
+            >
+              {steps[activeStep]}
+            </Typography>
 
-        <SelectLanguage lang={lang} handleChange={handleLangChange} />
-        <Typography
-          component="h1"
-          variant="h5"
-          align="left"
-          sx={{ pt: 3, pb: 1 }}
-        >
-          Chose how many words will be blank
-        </Typography>
-        <SelectWords words={words} handleChange={handleWordsChange} />
-
-        {activeStep === steps.length ? (
+        {/* I do not like this way of codig with the steps */}
+        {activeStep === 1 ? (
           // victory screen
           <React.Fragment>
             <Typography variant="h5" gutterBottom>
@@ -109,11 +119,16 @@ export const MainContainer = () => {
               Your order number is #2001539. We have emailed your order
               confirmation, and will send you an update when your order has
               shipped.
+							{lang}
+              {words}
+              {questions}
             </Typography>
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            {getStepContent(activeStep)}
+          <>
+						{/* <Selection lang={lang} handleLangChange={handleLangChange} words={words} handleWordsChange={handleWordsChange} questions={questions} handleQuestionsChange={handleQuestionsChange}/> */}
+						<Selection {...everything} />
+						{getStepContent(activeStep)}
             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
@@ -129,7 +144,7 @@ export const MainContainer = () => {
                 {ok ? "OK" : "OK"}
               </Button>
             </Box>
-          </React.Fragment>
+          </>
         )}
       </Paper>
     </Container>
