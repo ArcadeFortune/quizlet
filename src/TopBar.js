@@ -8,8 +8,7 @@ import Divider from "@mui/material/Divider";
 
 export const TopBar = () => {
 	const title = "Welcome to the (totally) fastest langauge learner!";
-	const SubTitle = "By ArcadeFortune - Alessio Lama";
-
+  
 	const handleAbout = () => {
 		alert("Made by ArcadeFortune - Alessio Lama");
 	};
@@ -17,15 +16,6 @@ export const TopBar = () => {
   return (
     <AppBar position="static" color="transparent">
       <Toolbar>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-        >
-          <MenuIcon />
-        </IconButton>
         <Typography
           variant="h6"
           component="a"
@@ -40,13 +30,6 @@ export const TopBar = () => {
           {title}
         </Typography>
 
-        <Typography
-          variant="subtitle"
-          component="div"
-          sx={{ flexGrow: 100, color: "inherit" }}
-        >
-          {SubTitle}
-        </Typography>
         <Divider />
         <Button
           color="inherit"
