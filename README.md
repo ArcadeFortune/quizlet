@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# Languagequiz for the Andeo Coding Contest
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This quiz is my solution to the coding contest from Andeo
+The goal is, to translate the given english text into the language you selected.
+Most of the translated text is already filled, your only job is to complete the sentence.
 
-## Available Scripts
+You can select tons of languages, whichever you prefer.
+The amount of gaps to fill is customizable.
+And the amount of text to translate is also customizable.
 
-In the project directory, you can run:
 
-### `npm start`
+## Tips & Tricks
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+You will not know where a mistake is made.
+But you will be able to see the solution by accessing the console :)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## How It Works
 
-### `npm test`
+1. Fetches an [API](https://api.chucknorris.io/) for random sentence(s), it will fetch more, depending on what you selected in the main menu.
+2. Translates the random sentence(s) with the [MyMemory API](https://mymemory.translated.net/), with the language you have selected.
+3. It will then render the original sentence, and the translated sentences (with gaps) beneath it.
+4. There is a button to check, whether your answers are correct or not.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## More Important Information
 
-### `npm run build`
+Because the [API](https://api.chucknorris.io/) sometimes gives inappropriate sentences, I make sure to check each sentences to not contain [bad words](https://github.com/coffee-and-fun/google-profanity-words/blob/main/data/en.txt). I cannot test every single sentence, so there might still be a very small possibility for inappropriate sentences to appear, be warned.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Run It On Your Own
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Get the code
+```
+git clone https://github.com/arcadefortune/quizlet
+```
+2. Change directory
+```
+cd todolist
+```
+3. Install dependecies
+```
+npm i
+```
+3. Run the code
+```
+npm start
+```
