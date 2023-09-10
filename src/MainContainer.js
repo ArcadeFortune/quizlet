@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Selection } from "./packers/Selection";
-import { Task } from "./packers/Task"
+import { Task } from "./packers/Task";
 import { Chuckles } from "./Chuckles";
 import { TranslateChuckles } from "./TranslateChuckles";
 
@@ -8,25 +8,22 @@ import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import ReplayIcon from "@mui/icons-material/Replay";
-import Menu from "@mui/material/Menu";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ContentCopy from "@mui/icons-material/ContentCopy";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import Modal from "@mui/material/Modal";
 import Divider from "@mui/material/Divider";
-import Fade from "@mui/material/Fade";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import TextField from '@mui/material/TextField';
-
+import Backdrop from "@mui/material/Backdrop";
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 const steps = ["Choose the settings", "Translate the english text", "???"];
 
 function getStepContent(step) {
@@ -38,8 +35,8 @@ function getStepContent(step) {
     case 2:
       return;
     default:
-      alert("Unknown step")
-      window.location.reload()
+      alert("Unknown step");
+      window.location.reload();
   }
 }
 
@@ -51,6 +48,51 @@ export const MainContainer = () => {
   const [ok, setOk] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [open, setOpen] = useState();
+  const [mistakes, setMistakes] = useState(0);
+  const [correct, setCorrect] = useState(false);
+  const [filled, setFilled] = useState(false);
+
+  const handleUserInput = (questionIndex, wordIndex, value) => {
+    const updatedAnswers = [...userAnswers];
+    if (!updatedAnswers[questionIndex]) {
+      updatedAnswers[questionIndex] = [];
+    }
+    updatedAnswers[questionIndex][wordIndex] = value;
+    setUserAnswers(updatedAnswers);
+  };
+
+  const checkAnswers = () => {
+    // this function is bruoght to you by ChatGPT-4
+    setFilled(true);
+    const areAllAnswersEmpty = userAnswers.every(
+      (answer) => !answer || answer.every((word) => !word)
+    );
+    if (areAllAnswersEmpty) {
+      setFilled(false);
+      setOpen(true);
+      return; // frühzeitiger Ausstieg aus der Funktion
+    }
+    setCorrect(true);
+    setOpen(true);
+
+    for (let i = 0; i < answers.length; i++) {
+      const actualWords = answers[i].split(" ");
+      const userWords = userAnswers[i] || [];
+
+      for (let j = 0; j < actualWords.length; j++) {
+        if (
+          userWords[j] &&
+          userWords[j].replace(/[,. -]/g, "").toLowerCase() !==
+            actualWords[j].replace(/[,. -]/g, "").toLowerCase()
+        ) {
+          setCorrect(false);
+          setMistakes(mistakes + 1);
+        }
+      }
+    }
+  };
 
   const handleLangChange = (event) => {
     setLang(event.target.value);
@@ -72,6 +114,7 @@ export const MainContainer = () => {
 
   const handleNext = async () => {
     if (activeStep === 0) {
+      setOk(false);
       const fetchedQuestions = await Chuckles(questionsToAsk);
       setQuestions(fetchedQuestions);
       setAnswers(await TranslateChuckles(fetchedQuestions, lang));
@@ -109,9 +152,17 @@ export const MainContainer = () => {
         {activeStep === 1 ? (
           <>
             {questions.map((question, index) => (
-              <Task key={index} index={index} question={question} answer={answers[index ]} words={words}/>
+              <Task
+                key={index}
+                index={index}
+                question={question}
+                answer={answers[index]}
+                words={words}
+                onInputChange={handleUserInput}
+              />
             ))}
-            </>
+            <Button onClick={checkAnswers}>Antworten überprüfen</Button>
+          </>
         ) : (
           <>
             <Selection {...everything} />
@@ -127,10 +178,41 @@ export const MainContainer = () => {
                 variant="contained"
                 onClick={handleNext}
                 sx={{ mt: 3, ml: 1 }}>
-                {ok ? "OK" : "OK"}
+                OK
               </Button>
             </Box>
           </>
+        )}
+        {open && (
+          <Modal
+            open={open}
+            onClose={() => {
+              if (correct) window.location.reload();
+              setOpen(false);
+              setMistakes(0);
+              setCorrect(false);
+            }}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            slots={{ backdrop: Backdrop }}
+            slotProps={{
+              backdrop: {
+                timeout: 500,
+              },
+            }}>
+            <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                How did you do?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }} display="inline-flex">
+                {correct
+                  ? "You are correct, good job!"
+                  : filled
+                  ? "You are wrong, " + (mistakes ? `you made ${mistakes} mistake(s)` : "")
+                  : "You have to fill all the blanks"}
+              </Typography>
+            </Box>
+          </Modal>
         )}
       </Paper>
     </Container>

@@ -1,46 +1,61 @@
+// chatGPT-4
+import { Typography, TextField } from '@mui/material';
+import { useState, useEffect } from 'react';
 
+export const AnswerQuestion = ({ text, words, onInputChange }) => {
+  // console.log(text)
+  const [userInputs, setUserInputs] = useState([]);
+  const [displayedText, setDisplayedText] = useState([]);
 
-import { Typography } from '@mui/material';
-import TextField from '@mui/material/TextField';
+  const handleInputChange = (event, index) => {
+    const newInputs = [...userInputs];
+    newInputs[index] = event.target.value;
+    setUserInputs(newInputs);
+    onInputChange(index, event.target.value);
+  };
 
+  useEffect(() => {
+    const wordsArray = text.split(" ");
 
-function processWords(backup, modifiedWords, replacedCount, number, index2) {
-  backup++;
-  modifiedWords = modifiedWords.map((word, index) => {
-    // what is this?
-    if (replacedCount < number && Math.random() < 0.5 && word !== "___") {
-      replacedCount++;
-
-      return <TextField key={`textField-${index}`} id="standard-basic" variant="standard" size='small' sx={{ width: '4em' }}/>;
+    if (words > wordsArray.length) {
+      setDisplayedText(wordsArray);
+      return;
     }
-    
-    return <Typography key={`text-${index}`} display="inline">{word} </Typography>;
-  });
-  return { backup, modifiedWords, replacedCount };
-}
-
-export const AnswerQuestion = ({ text, words, index }) => {
-  // returns the text with a <span> around random words, the amount of words is specified by the words prop
-  const parseText = (text, number) => {
-    const words = text.split(" ");
-
-    if (number > words.length) return text;
 
     let backup = 0;
     let replacedCount = 0;
-    let modifiedWords = [...words];
-    while (replacedCount < number || backup > 40) {
-      ({ backup, modifiedWords, replacedCount } = processWords(
-        backup,
-        modifiedWords,
-        replacedCount,
-        number,
-        index
-      ));
+    let modifiedWords = [...wordsArray];
+    while (replacedCount < words && backup < 40) {
+      for (let i = 0; i < modifiedWords.length; i++) {
+        if (replacedCount < words && Math.random() < 0.2 && modifiedWords[i] !== "___") {
+          replacedCount++;
+          modifiedWords[i] = "___";
+        }
+      }
+      backup++;
     }
 
-    return modifiedWords;
-  };
+    setDisplayedText(modifiedWords);
+  }, [text, words]);
 
-  return parseText(text, words);
+  return (
+    <>
+      {displayedText.map((word, index) => {
+        if (word === "___") {
+          return (
+            <TextField 
+              key={`textField-${index}`} 
+              value={userInputs[index] || ""} 
+              onChange={(e) => handleInputChange(e, index)} 
+              id="standard-basic" 
+              variant="standard" 
+              size='small' 
+              sx={{ width: '4em' }}
+            />
+          );
+        }
+        return <Typography key={`text-${index}`} display="inline">{word} </Typography>;
+      })}
+    </>
+  );
 };

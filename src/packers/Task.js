@@ -8,15 +8,20 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
-export const Task = ({ index, question, answer, words }) => {
+export const Task = ({ index, question, answer, words, onInputChange }) => {
   return (
     <Card sx={{ mb: "1%" }}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           #{index + 1} {question}
         </Typography>
-          <AnswerQuestion text={"answer watch Date A live"} words={words} index={index} />
+          <AnswerQuestion 
+            text={answer} 
+            words={words}
+            onInputChange={(wordIndex, value) => onInputChange(index, wordIndex, value)} 
+          />
       </CardContent>
     </Card>
   );
 };
+
